@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zhangtao.senior1.week1.dao.GoodsMapper">
+	<select id="selectGoods" resultType="com.zhangtao.senior1.week1.domain.Goods">
+	select  g.*,b.bname bname,k.kname kname from tb_goods g LEFT JOIN tb_brand b ON g.bid=b.bid
+LEFT JOIN tb_goodskind k on g.kid= k.kid
+	<where>
+	<if test="gname!=null and gname!='' ">
+		g.gname like concat('%',#{gname},'%')
+	</if>
+	
+	</where>
+	</select>
+	<select id="selectBrands" resultType="com.zhangtao.senior1.week1.domain.Brand">
+	select * from tb_brand
+	</select>
+	<select id="selectGoodskinds" resultType="com.zhangtao.senior1.week1.domain.GoodsKind">
+	select * from tb_goodskind
+	</select>
+	<insert id="add">
+	insert into tb_goods values(0,#{gname},#{ename},#{bid},#{kid},#{size},#{price},#{num},#{tab},#{pic})
+	</insert>
+	<select id="selectOne" resultType="com.zhangtao.senior1.week1.domain.Goods">
+		select  g.*,b.bname bname,k.kname kname from tb_goods g LEFT JOIN tb_brand b ON g.bid=b.bid
+LEFT JOIN tb_goodskind k on g.kid= k.kid  where g.gid=#{gid}
+	
+	</select>
+	<delete id="delAll">
+		delete from tb_goods where gid  in
+		<foreach collection="gid" item="gid" separator="," close=")" open="(">
+			#{gid}
+		</foreach>
+	</delete>
+</mapper>
